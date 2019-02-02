@@ -1,7 +1,7 @@
 # Maintainer: Alexey Pavlov <alexpux@gmail.com>
 
 pkgname=tmux-git
-pkgver=2.4.79.g0daeefef
+pkgver=2.5.54.ge112abc
 pkgrel=1
 pkgdesc='A terminal multiplexer'
 url='https://tmux.github.io/'
@@ -11,7 +11,7 @@ provides=('tmux')
 conflicts=('tmux')
 depends=('ncurses' 'libevent')
 makedepends=('git' 'ncurses-devel' 'libevent-devel')
-source=("${pkgname}"::'git+https://github.com/tmux/tmux.git'
+source=("${pkgname}"::'git+https://github.com/jukkakuivalainen/tmux.git'
         'msys-platform.patch'
         'no-check-dirs-permission.patch')
 sha256sums=('SKIP'

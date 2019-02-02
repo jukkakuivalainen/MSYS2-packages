@@ -1,0 +1,43 @@
+From 34c0807be6add421bc4624d498adf9f55d00a120 Mon Sep 17 00:00:00 2001
+From: nicm <nicm>
+Date: Tue, 15 Jan 2019 09:56:31 +0000
+Subject: [PATCH] Do not highlight characters which will not be copied,
+ reported by Jaroslaw Rzeszotko.
+
+---
+ screen.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/screen.c b/screen.c
+index 6fbd86f4..75d9d09d 100644
+--- a/screen.c
++++ b/screen.c
+@@ -425,7 +425,11 @@ screen_check_selection(struct screen *s, u_int px, u_int py)
+ 			if (py == sel->sy && px < sel->sx)
+ 				return (0);
+ 
+-			if (py == sel->ey && px > sel->ex)
++			if (sel->modekeys == MODEKEY_EMACS)
++				xx = (sel->ex == 0 ? 0 : sel->ex - 1);
++			else
++				xx = sel->ex;
++			if (py == sel->ey && px > xx)
+ 				return (0);
+ 		} else if (sel->sy > sel->ey) {
+ 			/* starting line > ending line -- upward selection. */
+@@ -456,7 +460,11 @@ screen_check_selection(struct screen *s, u_int px, u_int py)
+ 					return (0);
+ 			} else {
+ 				/* selection start (sx) is on the left */
+-				if (px < sel->sx || px > sel->ex)
++				if (sel->modekeys == MODEKEY_EMACS)
++					xx = (sel->ex == 0 ? 0 : sel->ex - 1);
++				else
++					xx = sel->ex;
++				if (px < sel->sx || px > xx)
+ 					return (0);
+ 			}
+ 		}
+-- 
+2.19.1
+

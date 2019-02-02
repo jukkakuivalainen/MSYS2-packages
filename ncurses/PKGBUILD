@@ -2,23 +2,19 @@
 
 pkgbase=ncurses
 pkgname=('ncurses' 'ncurses-devel')
-_basever=6.0
-_date=20170325
+_basever=6.1
+_date=20180908
 pkgver=${_basever}.${_date}
 pkgrel=1
 pkgdesc="System V Release 4.0 curses emulation library"
 arch=('i686' 'x86_64')
 url="https://www.gnu.org/software/ncurses/"
 license=('MIT')
-source=("${pkgbase}-${pkgver}.tar.gz"::"http://invisible-mirror.net/archives/ncurses/current/${pkgbase}-${_basever}-${_date}.tgz"
-        0001-CRITICAL-fix-return-value-of-drv_CanHandle-on-unknow.patch)
-sha256sums=('8fd0bd10150c8f0e7e647fcc93cbeb691463d1122461ce611145b6b5d5c0e178'
-            '2cebf10a5187b88ecd36f3052768057618e8e252dfdcfa13585c5c0136046b46')
+source=("${pkgbase}-${pkgver}.tar.gz"::"https://invisible-mirror.net/archives/ncurses/current/${pkgbase}-${_basever}-${_date}.tgz")
+sha256sums=('032f66748a4dfde5f1f886a90054b45b531c5cf7eb07d98e27cff563a05bd8e1')
 
 prepare() {
   cd ${srcdir}/${pkgbase}-${_basever}-${_date}
-
-  patch -p1 -i ${srcdir}/0001-CRITICAL-fix-return-value-of-drv_CanHandle-on-unknow.patch
 }
 
 build() {
@@ -42,7 +38,7 @@ build() {
     --enable-sp-funcs \
     --with-wrap-prefix=ncwrap_ \
     --enable-sigwinch \
-    --enable-term-driver \
+    --disable-term-driver \
     --enable-colorfgbg \
     --enable-tcap-names \
     --disable-termcap \
@@ -92,9 +88,12 @@ package_ncurses-devel() {
   rm -rf ${pkgdir}/usr/lib/terminfo
 
   cp -rf ${pkgdir}/usr/include/ncursesw ${pkgdir}/usr/include/ncurses
+  cp -f ${pkgdir}/usr/include/ncursesw/*.h ${pkgdir}/usr/include
 
   cp -f ${pkgdir}/usr/lib/libncursesw.a ${pkgdir}/usr/lib/libncurses.a
   cp -f ${pkgdir}/usr/lib/libncursesw.dll.a ${pkgdir}/usr/lib/libncurses.dll.a
+  cp -f ${pkgdir}/usr/lib/libncursesw.a ${pkgdir}/usr/lib/libcurses.a
+  cp -f ${pkgdir}/usr/lib/libncursesw.dll.a ${pkgdir}/usr/lib/libcurses.dll.a
 
   cp -f ${pkgdir}/usr/lib/libpanelw.a ${pkgdir}/usr/lib/libpanel.a
   cp -f ${pkgdir}/usr/lib/libpanelw.dll.a ${pkgdir}/usr/lib/libpanel.dll.a

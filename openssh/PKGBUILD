@@ -1,8 +1,8 @@
 # Maintainer: Alexey Pavlov <alexpux@gmail.com>
 
 pkgname=openssh
-pkgver=7.5p1
-pkgrel=1
+pkgver=7.9p1
+pkgrel=2
 pkgdesc='Free version of the SSH connectivity tools'
 url='http://www.openssh.org/portable.html'
 license=('custom:BSD')
@@ -10,18 +10,20 @@ arch=('i686' 'x86_64')
 groups=('net-utils')
 depends=('heimdal' 'libedit' 'libcrypt' 'openssl')
 makedepends=('heimdal-devel' 'libedit-devel' 'libcrypt-devel' 'openssl-devel')
-source=("http://mirrors.mit.edu/pub/OpenBSD/OpenSSH/portable/${pkgname}-${pkgver}.tar.gz"
+source=("http://mirrors.mit.edu/pub/OpenBSD/OpenSSH/portable/${pkgname}-${pkgver}.tar.gz"{,.asc}
         openssh-7.3p1-msys2.patch
         openssh-7.3p1-msys2-setkey.patch
         openssh-7.3p1-msys2-skip-privsep-tests.patch
         openssh-7.3p1-msys2-drive-name-in-path.patch)
-sha256sums=('9846e3c5fab9f0547400b4d2c017992f914222b3fd1f8eee6c7dc6bc5e59f9f0'
+sha256sums=('6b4b3ba2253d84ed3771c8050728d597c91cfce898713beb7b64a305b6f11aad'
+            'SKIP'
             'ab54293758c908bfdcd95b338bad5eb35290291e957dc99bc09fae4f906987fc'
             '25079cf4a10c1ab70d60302bccaabee513762520dffd7c35285f7aae3ea36087'
             '729aa8ef3723a223afbd1bda678a7deaca75b5c3b42a74b1a8c396f95f8677b5'
             '903b3eee51e492a125cab9c724ad967450307d53e457f025e4432b81cb145af5')
+validpgpkeys=('59C2118ED206D927E667EBE3D3E5F56B6D920D30')
 
-backup=('etc/ssh/ssh_config')
+backup=('etc/ssh/ssh_config' 'etc/ssh/sshd_config')
 
 prepare() {
   cd "${srcdir}/${pkgname}-${pkgver}"

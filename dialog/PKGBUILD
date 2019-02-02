@@ -1,0 +1,30 @@
+# $Id$
+# Maintainer: David Mott <mott.david.j@gmail.com>
+
+pkgname=dialog
+pkgver=1.3_20181107
+pkgrel=1
+pkgdesc="A tool to display dialog boxes from shell scripts"
+arch=('i686' 'x86_64')
+url="https://invisible-island.net/dialog/"
+license=('LGPL2.1')
+makedepends=('ncurses-devel')
+depends=('ncurses')
+source=(https://invisible-mirror.net/archives/$pkgname/$pkgname-${pkgver/_/-}.tgz)
+sha256sums=('efeaca8027dda53a9f3cf6c7b5c1a77093825b7a9b85c23c0c6c96afc3506457')
+
+build() {
+  cd "$srcdir/$pkgname-${pkgver/_/-}"
+
+  ./configure \
+    --prefix=/usr \
+    --enable-nls \
+    --with-ncursesw
+  make dialog.exe.exe
+  mv dialog.exe.exe dialog.exe
+}
+
+package() {
+  cd "$srcdir/$pkgname-${pkgver/_/-}"
+  make DESTDIR="$pkgdir" install-full
+}

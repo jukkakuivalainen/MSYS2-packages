@@ -1,7 +1,7 @@
 # Maintainer: Alexey Pavlov <alexpux@gmail.com>
 
 pkgname=tar
-pkgver=1.29
+pkgver=1.31
 pkgrel=1
 pkgdesc="Utility used to store, backup, and transport files"
 arch=('i686' 'x86_64')
@@ -12,27 +12,28 @@ depends=('msys2-runtime' 'libiconv' 'libintl' 'sh')
 makedepends=('libiconv-devel' 'gettext-devel')
 options=('!emptydirs')
 install=tar.install
-source=(https://ftp.gnu.org/gnu/$pkgname/$pkgname-$pkgver.tar.xz{,.sig}
+source=(https://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.xz{,.sig}
         1.29-mode-binary.patch
-        tar-1.29-msys2.patch)
-sha256sums=('402dcfd0022fd7a1f2c5611f5c61af1cd84910a760a44a688e18ddbff4e9f024'
+        tar-1.31-msys2.patch)
+sha256sums=('37f3ef1ceebd8b7e1ebf5b8cc6c65bb8ebf002c7d049032bf456860f25ec2dc1'
             'SKIP'
-            '50770e281d8b23c8d4ca301ea6f49962f01c55c89139157eb350f1d541052319'
-            '919ae6f5e871a4c1886d824e516a08d1e48161d9b6fe436ec75c82a11fe2f11b')
+            'e96dd022ce1d8749c766820ed1465d5f56f76a2c5e7eaeada473e9d652f5a3b1'
+            '72ebad71a176bd3ab32248c4a1d1ada1bb3c26cf359c8a1cb501a9288b19c479')
 validpgpkeys=('325F650C4C2B6AD58807327A3602B07F55D0C732') # Sergey Poznyakoff
 
 prepare() {
-  cd ${srcdir}/$pkgname-$pkgver
+  cd ${srcdir}/${pkgname}-${pkgver}
 
   patch -p1 -i ${srcdir}/1.29-mode-binary.patch
-  patch -p1 -i ${srcdir}/tar-1.29-msys2.patch
+  patch -p1 -i ${srcdir}/tar-1.31-msys2.patch
 
   autoreconf -fi
 }
 
 build() {
-  cd ${srcdir}/$pkgname-$pkgver
-  ./configure --build=${CHOST} \
+  cd ${srcdir}/${pkgname}-${pkgver}
+  ./configure \
+    --build=${CHOST} \
     --prefix=/usr \
     --sbindir=/usr/bin \
     --libexecdir=/usr/lib/tar \
@@ -41,11 +42,11 @@ build() {
 }
 
 check() {
-  cd ${srcdir}/$pkgname-$pkgver
+  cd ${srcdir}/${pkgname}-${pkgver}
   make check || true
 }
 
 package() {
-  cd ${srcdir}/$pkgname-$pkgver
+  cd ${srcdir}/${pkgname}-${pkgver}
   make DESTDIR=${pkgdir} install
 }

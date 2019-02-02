@@ -1,16 +1,17 @@
 # Maintainer: Alexey Pavlov <alexpux@gmail.com>
 
-pkgbase=markupsafe
-pkgname=("python3-${pkgbase}" "python2-${pkgbase}")
-pkgver=0.23
-pkgrel=2
+_realname=markupsafe
+pkgbase="python-${_realname}"
+pkgname=("python3-${_realname}" "python2-${_realname}")
+pkgver=1.1.0
+pkgrel=1
 pkgdesc="Implements a XML/HTML/XHTML Markup safe string for Python"
 arch=('i686' 'x86_64')
 license=('custom')
 url="https://pypi.python.org/pypi/MarkupSafe"
 makedepends=("python2-setuptools" "python3-setuptools")
 source=("https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-${pkgver}.tar.gz")
-sha256sums=('a4ec1aff59b95a14b45eb2e23761a0179e98319da5a7eb76b56ea8cdc7b871c3')
+sha256sums=('4e97332c9ce444b0c2c38dd22ddc61c743eb208d916e4265a2a3b575bdccb1d3')
 
 build() {
   cd "$srcdir"
@@ -30,7 +31,7 @@ package_python3-markupsafe() {
   cd "$srcdir/python3-build"
   /usr/bin/python3 setup.py install --prefix=/usr --root="$pkgdir" -O1
 
-  install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/python3-${pkgbase}/LICENSE"
+  install -Dm644 LICENSE.rst "${pkgdir}/usr/share/licenses/python3-${_realname}/LICENSE"
 }
 
 package_python2-markupsafe() {
@@ -39,5 +40,5 @@ package_python2-markupsafe() {
   cd "$srcdir/python2-build"
   /usr/bin/python2 setup.py install --prefix=/usr --root="$pkgdir" -O1
 
-  install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/python2-${pkgbase}/LICENSE"
+  install -Dm644 LICENSE.rst "${pkgdir}/usr/share/licenses/python2-${_realname}/LICENSE"
 }

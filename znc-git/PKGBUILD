@@ -2,10 +2,10 @@
 
 _pkgname=znc
 pkgname=${_pkgname}-git
-pkgver=r4470.9b31a07
+pkgver=r5021.72c5f57b
 pkgrel=1
 pkgdesc='An IRC bouncer with modules & scripts support'
-url='http://znc.in/'
+url='https://znc.in/'
 license=('Apache 2.0')
 arch=('i686' 'x86_64')
 provides=('znc')
@@ -19,7 +19,8 @@ makedepends=('cyrus-sasl'
              'perl'
              'python'
              'swig'
-             'tcl')
+             #'tcl'
+             )
 optdepends=('tcl: modtcl module'
             'python: modpython module'
             'perl: modperl module'
@@ -47,7 +48,7 @@ build() {
   cd "$srcdir/znc"
   ./configure --prefix=/usr \
     --enable-cyrus \
-    --enable-tcl \
+    --disable-tcl \
     --enable-perl \
     --enable-python
   make

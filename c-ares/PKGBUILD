@@ -2,50 +2,50 @@
 
 pkgbase="c-ares"
 pkgname=("libcares" "libcares-devel")
-pkgver=1.10.0
-pkgrel=2
+pkgver=1.15.0
+pkgrel=1
 pkgdesc="C library that performs DNS requests and name resolves asynchronously (libraries)"
 arch=('i686' 'x86_64')
-url="http://c-ares.haxx.se/"
+url="https://c-ares.haxx.se/"
 license=("MIT")
 makedepends=("gcc")
 depends=("gcc-libs")
 options=('staticlibs')
-source=("http://c-ares.haxx.se/download/$pkgbase-$pkgver.tar.gz"{,.asc}
-        "http://c-ares.haxx.se/license.html")
-sha256sums=('3d701674615d1158e56a59aaede7891f2dde3da0f46a6d3c684e0ae70f52d3db'
+source=("https://c-ares.haxx.se/download/${pkgbase}-${pkgver}.tar.gz"{,.asc}
+        "https://c-ares.haxx.se/license.html")
+sha256sums=('6cdb97871f2930530c97deb7cf5c8fa4be5a0b02c7cea6e7c7667672a39d6852'
             'SKIP'
-            'aa259141af2018178b832960800be9eaec1b04b18b54b55748e6735396962597')
+            '41215a3adeb9dcb308df48ed63faea7eb34cd9e944139123623e79fb8e656712')
 
 prepare() {
-  cd "$srcdir/$pkgbase-$pkgver"
+  cd "${srcdir}/${pkgbase}-${pkgver}"
   autoreconf -ivf
 }
 
 build() {
-  cd "$srcdir/$pkgbase-$pkgver"
+  cd "${srcdir}/${pkgbase}-${pkgver}"
   ./configure \
     --prefix=/usr \
     --enable-shared \
     --enable-static
   make
-  make DESTDIR="$srcdir/dest" install
-  install -Dm644 $srcdir/license.html $srcdir/dest/usr/share/licenses/c-ares/license.html
+  make DESTDIR="${srcdir}/dest" install
+  install -Dm644 ${srcdir}/license.html ${srcdir}/dest/usr/share/licenses/c-ares/license.html
 }
 
 check() {
-  cd "$srcdir/$pkgbase-$pkgver"
+  cd "${srcdir}/${pkgbase}-${pkgver}"
   make -k check
 }
 
 package_libcares() {
   groups=('libraries')
 
-  mkdir -p $pkgdir/usr/bin
-  cp -rf $srcdir/dest/usr/bin $pkgdir/usr/
+  mkdir -p ${pkgdir}/usr/bin
+  cp -rf ${srcdir}/dest/usr/bin ${pkgdir}/usr/
 
-  mkdir -p $pkgdir/usr/share
-  cp -rf $srcdir/dest/usr/share $pkgdir/usr/
+  mkdir -p ${pkgdir}/usr/share
+  cp -rf ${srcdir}/dest/usr/share ${pkgdir}/usr/
 }
 
 package_libcares-devel() {
@@ -53,7 +53,7 @@ package_libcares-devel() {
   groups=('development')
   depends=("libcares=${pkgver}")
 
-  mkdir -p $pkgdir/usr
-  cp -rf $srcdir/dest/usr/include $pkgdir/usr/
-  cp -rf $srcdir/dest/usr/lib $pkgdir/usr/
+  mkdir -p ${pkgdir}/usr
+  cp -rf ${srcdir}/dest/usr/include ${pkgdir}/usr/
+  cp -rf ${srcdir}/dest/usr/lib ${pkgdir}/usr/
 }

@@ -78,7 +78,7 @@ diff -urN git-2.8.2-orig/path.c git-2.8.2/path.c
 diff -urN git-2.8.2-orig/pathspec.c git-2.8.2/pathspec.c
 --- git-2.8.2-orig/pathspec.c	2016-05-17 11:31:06.253814600 +0100
 +++ git-2.8.2/pathspec.c	2016-05-17 11:31:16.903423700 +0100
-@@ -107,6 +107,10 @@
+@@ -397,6 +397,10 @@
  			       const char *prefix, int prefixlen,
  			       const char *elt)
  {
@@ -89,9 +89,9 @@ diff -urN git-2.8.2-orig/pathspec.c git-2.8.2/pathspec.c
  	unsigned magic = 0, element_magic = 0;
  	const char *copyfrom = elt;
  	char *match;
-@@ -315,6 +319,10 @@
- 		die_inside_submodule_path(item);
- 		die ("BUG: item->nowildcard_len > item->len || item->prefix > item->len)");
+@@ -488,6 +492,10 @@
+ 	    item->prefix         > item->len) {
+ 		BUG("error initializing pathspec_item");
  	}
 +#if defined(__CYGWIN__)
 +	if (in_elt != elt)

@@ -1,8 +1,8 @@
 # Maintainer: Martell Malone <martellmalone@gmail.com>
 
 pkgname="crosstool-ng"
-pkgver=1.21.0
-pkgrel=1
+pkgver=1.23.0
+pkgrel=2
 pkgdesc="A cross-platform open-source toolchain system"
 arch=('i686' 'x86_64')
 url="http://www.crosstool-ng.org/"
@@ -13,29 +13,32 @@ makedepends=("autoconf" "automake-wrapper" "binutils" "bison"
              "tar" "texinfo" "wget" "xz")
 depends=("ncurses" "libintl")
 options=('staticlibs' 'strip')
-source=("http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-${pkgver}.tar.xz"{,.sig}
+source=("http://crosstool-ng.org/download/crosstool-ng/${pkgname}-${pkgver}.tar.xz"
         "0001-Modify-config-to-support-correct-Mingw64-Triplet-Nam.patch"
         "0002-use-wide-versions-of-libs-for-nconf.patch"
         "0003-modify-kconfig-make-lintl.patch"
-        "0004-kconfig-nconf-fix-compile-with-ncurses-reentrant-API.patch")
-sha256sums=('fbadabcdbe1c81f8752f7b1c740120a1357cc18f73bca5b409888404dde31c12'
-            'SKIP'
-            'c55cf0f56a2ebbd81ff63993eb470f77a35c3cf001cfb47d95384e7e8f26834e'
-            'de75159607310d30365609003768e903c67f4aeb1fbf48d91c39c6b38ded8e35'
-            '43a37c96f0a8c245b380f666750b2287e7fe54ff888c95cde2f99f92194044a1'
-            'd77d273c0aedb1b7c348d2e5c312de38687eccd3dffc88dcf513deec498a16be')
+        "0005-GNU-stats-test.patch")
+sha256sums=('68a43ea98ccf9cb345cb6eec494a497b224fee24c882e8c14c6713afbbe79196'
+            'a64a1caf173f9e894e7762cc0aecda0224007f6db292f2594453c4be326307fe'
+            '2e9217ebfb9460f81cab5ed01d656736a9f88dda5796a57417eb94e783ffdfbb'
+            '828a0b995520a5017346f5662abe0c69356e0d4bc88401b5a4f9e7e289a7aadb'
+            'cf1534068b550d7905fceaa95ee7ebcdd214881a0629c23a4c752837611884eb')
+noextract=(${pkgname}-${pkgver}.tar.xz)
 
 prepare() {
+  [[ -d ${srcdir}/${pkgname}-${pkgver} ]] && rm -rf ${srcdir}/${pkgname}-${pkgver}
+  tar -xJf ${srcdir}/${pkgname}-${pkgver}.tar.xz -C ${srcdir} || true
+  
   cd "${srcdir}/${pkgname}-${pkgver}"
   patch -p1 -i "${srcdir}/0001-Modify-config-to-support-correct-Mingw64-Triplet-Nam.patch"
   patch -p1 -i "${srcdir}/0002-use-wide-versions-of-libs-for-nconf.patch"
   patch -p1 -i "${srcdir}/0003-modify-kconfig-make-lintl.patch"
-  patch -p1 -i "${srcdir}/0004-kconfig-nconf-fix-compile-with-ncurses-reentrant-API.patch"
-  ./bootstrap
+  patch -p1 -i "${srcdir}/0005-GNU-stats-test.patch"
 }
 
 build() {
   cd "${srcdir}/${pkgname}-${pkgver}"
+  autoreconf -fiv
   ./configure \
     --build=${CHOST} \
     --prefix=/usr

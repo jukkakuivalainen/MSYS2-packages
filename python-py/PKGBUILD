@@ -8,18 +8,23 @@
 
 pkgbase=python-py
 pkgname=('python3-py' 'python2-py')
-pkgver=1.4.31
+pkgver=1.7.0
 pkgrel=1
 pkgdesc="library with cross-python path, ini-parsing, io, code, log facilities"
 arch=('any')
 license=('MIT')
-url="https://pylib.readthedocs.org/"
-makedepends=('python3-setuptools' 'python2-setuptools')
-source=("https://pypi.python.org/packages/source/p/py/py-$pkgver.tar.gz")
-sha512sums=('fd0f4f509d81beb8e5cdb5a8d5d7d40d8a74737c017c915b0630ce740868c32fbf1af4a01dec2ae998e5a9516578e8404ad2b8d966606919767ae25f27eb0b0d')
+url="https://pylib.readthedocs.io/"
+makedepends=('python3-setuptools'
+             'python3-setuptools-scm'
+             'python2-setuptools'
+             'python2-setuptools-scm')
+source=("https://pypi.python.org/packages/source/p/py/py-${pkgver}.tar.gz")
+sha512sums=('4f79aeff9d897aa260bbd5cd1c6c99c8302739e13ec879725b4cb212a5284a987ce0469d1d7b6964d6969f1e0dd071d0080bc9617baf4155cc1c6995c30a55e9')
 
 prepare() {
   cp -a py-${pkgver}{,-py2}
+  export LC_CTYPE=en_US.UTF-8
+  export SETUPTOOLS_SCM_PRETEND_VERSION=${pkgver}
 }
 
 build() {

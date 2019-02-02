@@ -1,0 +1,41 @@
+# Maintainer: atom2013 <atom.long@hotmail.com>
+
+pkgbase=python-six
+pkgname=('python2-six' 'python3-six')
+pkgver=1.12.0
+pkgrel=1
+pkgdesc="Python 2 and 3 compatibility utilities"
+arch=('any')
+url="https://pypi.python.org/pypi/six/"
+license=('MIT')
+makedepends=('python3-setuptools' 'python2-setuptools')
+source=("https://pypi.io/packages/source/s/six/six-${pkgver}.tar.gz")
+sha256sums=('d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73')
+
+build() {
+  cp -a six-$pkgver{,-py2}
+}
+
+check() {
+  cd "$srcdir"/six-$pkgver
+  py.test
+
+  cd "$srcdir"/six-$pkgver-py2
+  py.test2
+}
+
+package_python3-six() {
+  depends=('python3')
+
+  cd six-${pkgver}
+  python3 setup.py install --root "${pkgdir}" --optimize=1
+  install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/${pkgname}/LICENSE
+}
+
+package_python2-six() {
+  depends=('python2')
+
+  cd six-${pkgver}-py2
+  python2 setup.py install --root "${pkgdir}" --optimize=1
+  install -Dm644 LICENSE "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+}

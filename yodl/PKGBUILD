@@ -1,0 +1,28 @@
+# Maintainer: LoveSy <shana@zju.edu.cn>
+
+pkgname=yodl
+pkgver=4.01.00
+pkgrel=1
+pkgdesc='Implements a pre-document language and tools to process it'
+arch=('i686' 'x86_64')
+url='http://fbb-git.gitlab.io/yodl/'
+license=('GPL3')
+depends=('bash')
+makedepends=('icmake>=8.00.00')
+source=("${pkgname}::git+https://gitlab.com/fbb-git/yodl.git#tag=${pkgver}")
+sha512sums=('SKIP')
+
+build() {
+  cd "${srcdir}/${pkgname}/${pkgname}"
+  ./build programs
+  ./build macros
+  ./build man
+  ./build html
+}
+package() {
+  cd "${srcdir}/${pkgname}/${pkgname}"
+  ./build install programs "${pkgdir}"
+  ./build install macros "${pkgdir}"
+  ./build install man "${pkgdir}"
+  ./build install manual "${pkgdir}"
+}

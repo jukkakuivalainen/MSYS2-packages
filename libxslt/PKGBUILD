@@ -1,8 +1,8 @@
 # Maintainer: Alexey Pavlov <alexpux@gmail.com>
 
 pkgname=('libxslt' 'libxslt-devel' 'libxslt-python')
-pkgver=1.1.28
-pkgrel=7
+pkgver=1.1.33
+pkgrel=1
 pkgdesc="XML stylesheet transformation library"
 arch=('i686' 'x86_64')
 url="http://xmlsoft.org/XSLT/"
@@ -10,11 +10,11 @@ license=('custom')
 makedepends=('gcc' 'python2' 'libxml2-devel' 'libgcrypt-devel')
 checkdepends=('docbook-xml')
 options=('!libtool')
-source=(ftp://xmlsoft.org/libxslt/${pkgname}-${pkgver}.tar.gz
-        libxslt-1.1.28-msys2.patch
+source=(http://xmlsoft.org/sources/${pkgname}-${pkgver}.tar.gz
+        libxslt-1.1.32-msys2.patch
         libxslt.m4-libxslt-1.1.26.patch)
-sha256sums=('5fc7151a57b89c03d7b825df5a0fae0a8d5f05674c0e7cf2937ecec4d54a028c'
-            'f0fce03a19e903c85e0a21e9652dbf7a59531a497a41e7524c003f664ce7b081'
+sha256sums=('8e36605144409df979cab43d835002f63988f3dc94d5d3537c12796db90e38c8'
+            '4ee2a3536bb1e3e28c1fe4b0e4322e593aa85b9abcea4fd9ba1ed1c044645912'
             'c02cd8437064db0921c08e63245c403dad12410d2997715aa7aa36600bfaa895')
 
 PYTHON_SITELIB=/usr/lib/python2.7/site-packages
@@ -25,7 +25,7 @@ prepare() {
 
   #patch -p1 -i ${srcdir}/libxslt-1.1.28-doc-utf8.patch
   patch -p1 -i ${srcdir}/libxslt.m4-libxslt-1.1.26.patch
-  patch -p1 -i ${srcdir}/libxslt-1.1.28-msys2.patch
+  patch -p1 -i ${srcdir}/libxslt-1.1.32-msys2.patch
 
   autoreconf -fi
 }
@@ -48,10 +48,10 @@ build() {
   make
   make DESTDIR=${srcdir}/dest install
 
-  mv ${srcdir}/dest${PYTHON_SITELIB}/${pkgname/lib/msys-}mod.dll ${srcdir}/dest${PYTHON_SITELIB}/${pkgname}mod.dll
+#  mv ${srcdir}/dest${PYTHON_SITELIB}/${pkgname/lib/msys-}mod.dll ${srcdir}/dest${PYTHON_SITELIB}/${pkgname}mod.dll
   sed -i -e "s:${pkgname/lib/msys-}mod:${PN}mod:g" ${srcdir}/dest${PYTHON_SITELIB}/${pkgname}mod.la
 
-  mv ${srcdir}/dest/usr/share/doc/${pkgname}-python-${pkgver} ${srcdir}/dest/usr/share/doc/python-${pkgname}
+#  mv ${srcdir}/dest/usr/share/doc/${pkgname}-python-${pkgver} ${srcdir}/dest/usr/share/doc/python-${pkgname}
   # rm -f ${srcdir}/dest/usr/lib/python*/site-packages/*.a
 }
 
@@ -84,7 +84,7 @@ package_libxslt-devel() {
   rm -rf ${pkgdir}${PYTHON_SITELIB}
   cp -rf ${srcdir}/dest/usr/share/aclocal ${pkgdir}/usr/share/
   cp -rf ${srcdir}/dest/usr/share/doc ${pkgdir}/usr/share/
-  rm -rf ${pkgdir}/usr/share/doc/python-libxslt
+  rm -rf ${pkgdir}/usr/share/doc/libxslt-python-${pkgver}
 }
 
 package_libxslt-python() {
@@ -97,5 +97,6 @@ package_libxslt-python() {
   mkdir -p ${pkgdir}/${PYTHON_SITELIB}
   mkdir -p ${pkgdir}/usr/share/doc
   cp -rf ${srcdir}/dest${PYTHON_SITELIB}/* ${pkgdir}${PYTHON_SITELIB}/
-  cp -rf ${srcdir}/dest/usr/share/doc/python-libxslt ${pkgdir}/usr/share/doc/
+  cp -rf ${srcdir}/dest/usr/share/doc/libxslt-python-${pkgver} ${pkgdir}/usr/share/doc/
+  
 }

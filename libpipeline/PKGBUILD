@@ -1,7 +1,7 @@
 # Maintainer: Alexey Pavlov <alexpux@gmail.com>
 
 pkgname=('libpipeline' 'libpipeline-devel')
-pkgver=1.4.0
+pkgver=1.5.0
 pkgrel=1
 pkgdesc="a C library for manipulating pipelines of subprocesses in a flexible and convenient way"
 url="http://libpipeline.nongnu.org/"
@@ -11,22 +11,23 @@ license=('BSD')
 makedepends=('openssl-devel' 'zlib-devel')
 options=('!libtool')
 source=(https://download.savannah.gnu.org/releases/libpipeline/libpipeline-$pkgver.tar.gz{,.sig}
-        libpipeline-1.3.0-msys2.patch)
-sha256sums=('79c759e7fbf17b560a72edce3ff9bb308d7720306c2650e4fae541daabb89bb6'
+        libpipeline-1.5.0-gnulib.patch
+        libpipeline-1.4.1-msys2.patch)
+sha256sums=('0d72e12e4f2afff67fd7b9df0a24d7ba42b5a7c9211ac5b3dcccc5cd8b286f2b'
             'SKIP'
-            '59e8f8764b5bca6ad690fc3ec94649990cc19a00a833f453e6cde65b0a60bf74')
+            '0559526eecb02415f210c6c0d2b0a5b5694ffe8637b74840684433f8cdb1bd37'
+            'ca3d2b15f0da4b593ca4a6b25b7555a96f3a565d75edf11b93cd97ca1b831265')
 
 prepare() {
-  cd "$pkgname-$pkgver"
-  patch -p1 -i ${srcdir}/libpipeline-1.3.0-msys2.patch
+  cd "${pkgname}-${pkgver}"
+  patch -p1 -i ${srcdir}/libpipeline-1.5.0-gnulib.patch
+  patch -p1 -i ${srcdir}/libpipeline-1.4.1-msys2.patch
 
-  cp -rf build-aux/snippet ${srcdir}/
   autoreconf -fi
-  cp -rf ${srcdir}/snippet build-aux/
 }
 
 build() {
-  cd "$pkgname-$pkgver"
+  cd "${pkgname}-${pkgver}"
 
   ./configure --build=${CHOST} --prefix=/usr
   make
@@ -34,7 +35,7 @@ build() {
 }
 
 check() {
-  cd "$pkgname-$pkgver"
+  cd "${pkgname}-${pkgver}"
   make check
 }
 

@@ -1,7 +1,7 @@
 # Maintainer: Alexey Pavlov <alexpux@gmail.com>
 
 pkgname=less
-pkgver=481
+pkgver=530
 pkgrel=1
 pkgdesc="A terminal based program for viewing text files"
 license=('GPL3')
@@ -10,8 +10,8 @@ url="http://www.greenwoodsoftware.com/less"
 groups=('base')
 depends=('ncurses' 'libpcre')
 makedepends=('ncurses-devel' 'pcre-devel')
-source=(http://www.greenwoodsoftware.com/${pkgname}/${pkgname}-${pkgver}.tar.gz{,.sig})
-sha256sums=('3fa38f2cf5e9e040bb44fffaa6c76a84506e379e47f5a04686ab78102090dda5'
+source=(http://www.greenwoodsoftware.com/${pkgname}/${pkgname}-${pkgver}{.tar.gz,.sig})
+sha256sums=('503f91ab0af4846f34f0444ab71c4b286123f0044a4964f1ae781486c617f2e2'
             'SKIP')
 
 build() {

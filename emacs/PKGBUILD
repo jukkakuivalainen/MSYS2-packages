@@ -1,20 +1,21 @@
 # Maintainer: Ricky <rickleaf.wu@gmail.com>
 pkgname="emacs"
-pkgver=25.1
+pkgver=26.1
 pkgrel=1
 pkgdesc="The extensible, customizable, self-documenting, real-time display editor (msys2)"
-url="http://www.gnu.org/software/${pkgname}/"
+url="https://www.gnu.org/software/${pkgname}/"
 license=('GPL3')
 arch=('i686' 'x86_64')
-depends=('ncurses' 'zlib' 'libxml2' 'libiconv' 'crypt' 'libgnutls' 'glib2' 'libhogweed')
+depends=('ncurses' 'zlib' 'libxml2' 'libiconv' 'libcrypt' 'libgnutls' 'glib2' 'libhogweed')
 groups=('editors')
 makedepends=('gawk' 'libiconv-devel' 'libxml2-devel' 'libiconv-devel' 'ncurses-devel' 'libcrypt-devel' 'libgnutls-devel')
 options=('strip')
-source=("http://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.xz"{,.sig}
+source=("https://ftp.gnu.org/gnu/${pkgname}/${pkgname}-${pkgver}.tar.xz"{,.sig}
         'configure.ac.diff')
-sha256sums=('19f2798ee3bc26c95dca3303e7ab141e7ad65d6ea2b6945eeba4dbea7df48f33'
-            'fce9c0494bec47106e6d6853e44b825e49558a8da009ec47930d7c7d6814037a'
+sha256sums=('1cf4fc240cd77c25309d15e18593789c8dbfba5c2b44d8f77c886542300fd32c'
+            'SKIP'
             '0cb204f2cab4740d27a47a4adc7e4168d6034e86cd522605a85bbd03fb1db59d')
+validpgpkeys=('B29426DEFB07724C3C35E5D36592E9A3A0B0F199' '28D3BED851FDF3AB57FEF93C233587A47C207910')
 
 prepare() {
   cd "${pkgname}-${pkgver}"
@@ -23,7 +24,6 @@ prepare() {
 }
 
 build() {
-	
   cd "${srcdir}/${pkgname}-${pkgver}"
 
   CPPFLAGS="-DNDEBUG"
@@ -43,8 +43,10 @@ build() {
 package() {
   cd "${srcdir}"/${pkgname}-${pkgver}
   make DESTDIR="${pkgdir}" install
-  rm -f "${pkgdir}/usr/bin/ctags.exe"
-  rm -f "${pkgdir}/usr/share/man/man1/ctags.1.gz"
+  mv "${pkgdir}/usr/bin/ctags.exe" \
+    "${pkgdir}/usr/bin/ctags-emacs.exe"
+  mv "${pkgdir}/usr/share/man/man1/ctags.1" \
+     "${pkgdir}/usr/share/man/man1/ctags-emacs.1"
   rm -f "${pkgdir}/usr/share/info/info.info.gz"
 
   local dir="${pkgdir}/usr/share/${pkgname}"
